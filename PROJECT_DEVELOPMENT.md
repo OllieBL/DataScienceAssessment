@@ -1,8 +1,8 @@
-# Data Science Project Development
+# __Data Science Project Development__
 
-## Requirements
+## __Requirements__
 
-### Functional Requirements
+### __Functional Requirements__
 
 * The user should be able to search for locations by coordinates, and name
 * The user should be able to determine all weather information relevant to their search
@@ -11,16 +11,16 @@
 * The user should be able to check the forecast for a location
 * The user should be able to compare the weather conditions in two different places
 
-### Non-functional Requirements
+### __Non-functional Requirements__
 
 * The user should be able to save locations to be accessed easier
 * The system should output the users request in less than 0.5 seconds
 * The user should be able to get from the home screen to the point where they can get their request in less than 3 button clicks
 * The user should be able to determine most functions in the application without specific help
 
-## Specifications
+## __Specifications__
 
-### Functional Specifications
+### __Functional Specifications__
 
 __User Requirements:__
 * The user needs to be able to check the weather information about a chosen location
@@ -48,7 +48,21 @@ __Error Handling:__
 * The system needs to be able to change and adjust the capitilisation of words to send requests
 * The system needs to be able to interpret an error message from the API and return a correct error message to the user
 
-### Non-Functional Specification
+#### __Use Case__
+__Actor:__ User (person who wants to know the weather)
+
+__Preconditions:__ Connection to internet, API for weather data available
+
+__Main Flow:__ 
+1. __Search/Find Location:__ User enters the name of the location (e.g. Paris, Sydney), then the system retrieves the information relevent to the location
+1. __Display Information:__ System displays the information of the location searched (e.g. temperature)
+1. __Visualise Information:__ System generates a graph using the information retrieved
+1. __Save Location:__ User prompts system to save a location to be found easier later
+1. __Compare Locations:__ User prompts system to find information of two locations and allow the user to compare them
+
+__Postconditions:__ Location information is found, stored, compared, or visualised successfully
+
+### __Non-Functional Specification__
 
 __Performance:__
 * The system needs to be able to respond to the user 0.5 seconds after a request has been made
@@ -64,26 +78,42 @@ __Reliability:__
 * The system needs to have 95.5% uptime
 * The data outputted needs to have 100% reliability if the API is working
 
-## Design
+## __Design__
 
-### Gantt Chart
+### __Gantt Chart__
 
-### Structure Chart
+### __Structure Chart__
 
-### Algorithms
+![Alt text](Screenshot%202025-03-11%20145219.png)
 
-### Data Dictionary
+### __Algorithms__
 
-## Development
+#### __Pseudocode__
+```
+BEGIN main()
+    choice = 0
+    WHILE choice is not 20
+        INPUT choice
+        IF choice is 1 THEN
+            SearchLocation
+        IF API Request Valid THEN
+            
+```
 
-### UI Design
+#### __Flowcharts__
 
-### Progress Report
+### __Data Dictionary__
 
-## Integration
+## __Development__
 
-## Testing and Debugging
+### __UI Design__
 
-## Installation
+### __Progress Report__
 
-## Maintenance
+## __Integration__
+
+## __Testing and Debugging__
+
+## __Installation__
+
+## __Maintenance__
