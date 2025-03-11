@@ -82,6 +82,8 @@ __Reliability:__
 
 ### __Gantt Chart__
 
+![alt text](<Online Gantt 20250311.png>)
+
 ### __Structure Chart__
 
 ![Alt text](Screenshot%202025-03-11%20145219.png)
