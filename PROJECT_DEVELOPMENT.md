@@ -86,7 +86,7 @@ __Reliability:__
 
 ### __Structure Chart__
 
-![Alt text](Screenshot%202025-03-11%20145219.png)
+![alt text](<Structure Chart.png>)
 
 ### __Algorithms__
 
