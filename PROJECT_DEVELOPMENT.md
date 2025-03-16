@@ -86,7 +86,7 @@ __Reliability:__
 
 ### __Structure Chart__
 
-![Alt text](Structure%20Chart.png)
+![Alt text](Screenshot%202025-03-11%20145219.png)
 
 ### __Algorithms__
 
@@ -94,17 +94,55 @@ __Reliability:__
 ```
 BEGIN main()
     choice = 0
-    WHILE choice is not 20
+    WHILE choice is not 6
         INPUT choice
         IF choice is 1 THEN
-            SearchLocation
-        IF API Request Valid THEN
-            
+            FindLocationDetails
+            IF FindLocationDetails is Valid THEN
+                RETURN Location_Details
+            ELSE
+                RETURN 'ERROR'
+        IF choice is 2 THEN
+            DisplayInformation
+        IF choice is 3 THEN
+            VisualiseInformation
+        IF choice is 4 THEN
+            SaveLocation
+        IF choice is 5 THEN
+            CompareLocations
+        ENDIF
+    ENDWHILE
+END main()
+
+BEGIN FindLocationDetails()
+    SearchLocation
+    IF API_KEY Valid THEN
+        RETURN Valid
+    ELSE
+        RETURN Not Valid
+    ENDIF
+END FindLocationDetails
 ```
 
 #### __Flowcharts__
 
+![alt text](<Flowchart main.png>)
+![alt text](<Flowchart Function.png>)
+
 ### __Data Dictionary__
+
+| Variable | Data Type | Format for Display | Size in Bytes | Size for Display | Description | Example | Validation |
+|---|---|---|---|---|---|---|---|
+| last_updated | string | YYYY-MM-DD HH-MM | 6 | 16 | Local time when the real time data was updated | 2025-03-16 14:45 | Valid date that is within an hour of the present |
+| last_updated_epoch | int | N..N | 3 | 2 | Local time when the real time data was updated in unix time | 1742096700 | Valid unix time that is within an hour of the present |
+| temp_c/temp_f | float | NN.N | 3 | 2 | Temperature in celsius/farhenheit | 37.3 / 99.1 | Valid floating point decimal |
+| feelslike_c/f | float | NN.N | 3 | 2 | Feels like temperature in celsius/farhenheit | 39.4 / 103.0 | Valid floating point decimal |
+| windchill_c/f | float | NN.N | 3 | 2 | Windchill temperature in celcius/farhenheit | 34.1 / 93.4 | Valid floating point decimal |
+| heatindex_c/f | float | NN.N | 3 | 2 | Heat index in celcius/farhenheit | 34.3 / 93.7 | Valid floating point decimal |
+| dewpoint_c/f | float | NN.N | 3 | 2 | Dew point in celcius/farhenheit | 14.7 / 58.5 | Valid floating point decimal |
+| wind_kph/mph | float | NN.N | 3 | 2 | Wind speed in kilometre/miles per hour | 
+
+
 
 ## __Development__
 
