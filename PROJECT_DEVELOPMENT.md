@@ -133,14 +133,23 @@ END FindLocationDetails
 
 | Variable | Data Type | Format for Display | Size in Bytes | Size for Display | Description | Example | Validation |
 |---|---|---|---|---|---|---|---|
-| last_updated | string | YYYY-MM-DD HH-MM | 6 | 16 | Local time when the real time data was updated | 2025-03-16 14:45 | Valid date that is within an hour of the present |
+| last_updated | string | YYYY-MM-DD HH-MM | 6 | 6 | Local time when the real time data was updated | 2025-03-16 14:45 | Valid date that is within an hour of the present |
 | last_updated_epoch | int | N..N | 3 | 2 | Local time when the real time data was updated in unix time | 1742096700 | Valid unix time that is within an hour of the present |
-| temp_c/temp_f | float | NN.N | 3 | 2 | Temperature in celsius/farhenheit | 37.3 / 99.1 | Valid floating point decimal |
-| feelslike_c/f | float | NN.N | 3 | 2 | Feels like temperature in celsius/farhenheit | 39.4 / 103.0 | Valid floating point decimal |
-| windchill_c/f | float | NN.N | 3 | 2 | Windchill temperature in celcius/farhenheit | 34.1 / 93.4 | Valid floating point decimal |
-| heatindex_c/f | float | NN.N | 3 | 2 | Heat index in celcius/farhenheit | 34.3 / 93.7 | Valid floating point decimal |
-| dewpoint_c/f | float | NN.N | 3 | 2 | Dew point in celcius/farhenheit | 14.7 / 58.5 | Valid floating point decimal |
-| wind_kph/mph | float | NN.N | 3 | 2 | Wind speed in kilometre/miles per hour | 
+| temp_c/temp_f | float | NN.N | 3 | 2 | Temperature in celsius/farhenheit | 37.3 / 99.1 | Valid float |
+| feelslike_c/f | float | NN.N | 3 | 2 | Feels like temperature in celsius/farhenheit | 39.4 / 103.0 | Valid float |
+| windchill_c/f | float | NN.N | 3 | 2 | Windchill temperature in celcius/farhenheit | 34.1 / 93.4 | Valid float |
+| heatindex_c/f | float | NN.N | 3 | 2 | Heat index in celcius/farhenheit | 34.3 / 93.7 | Valid float |
+| dewpoint_c/f | float | NN.N | 3 | 2 | Dew point in celcius/farhenheit | 14.7 / 58.5 | Valid float |
+| wind_kph/mph | float | NN.N | 3 | 2 | Wind speed in kilometres/miles per hour | 41.8 / 25.9 | Valid float above 0 |
+| wind_degree | int | NNN | 1 | 1 | Wind direction in degrees | 182 | Integer between 0 and 360 |
+| wind_dir | string | XXX | 3 | 3 | Wind direction as 16 point compass | S | 1-3 characters out of N, S, E, W immediately next to each other |
+| pressure_mb/in | float | NNNN.NN | 4 | 3 | Pressure in millibars/inches | 1021.0 / 30.15 | Valid float above 0 |
+| precip_mm/in | float | NN.NN | 4 | 3 | Precipitation amount in millimeters/inches | 0.09 / 0.0 | Valid float above 0 |
+| humidity | int | NN | 2 | 1 | Humidity as percentage | 52 | Valid int between 0 and 100 |
+| cloud | int | NN | 2 | 1 | Cloud cover as percentage | 25 | Valid int between 0 and 100 |
+| uv | float | NN.N | 3 | 2 | UV Index | 0.0 | Valid float above 0 |
+| gust_kph/mph | float | NN.N | 3 | 2 | Wind gust in kilometres/miles per hour | 51.9 / 32.2 | Valid float above 0 |
+| vis_km/miles | float | NN.N | 2 | 2 | Visibility in kilometres/miles | 10.0 / 6.0 | Valid float above 0 |
 
 
 
