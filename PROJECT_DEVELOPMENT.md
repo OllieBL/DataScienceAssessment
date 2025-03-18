@@ -150,8 +150,22 @@ END FindLocationDetails
 | uv | float | NN.N | 3 | 2 | UV Index | 0.0 | Valid float above 0 |
 | gust_kph/mph | float | NN.N | 3 | 2 | Wind gust in kilometres/miles per hour | 51.9 / 32.2 | Valid float above 0 |
 | vis_km/miles | float | NN.N | 2 | 2 | Visibility in kilometres/miles | 10.0 / 6.0 | Valid float above 0 |
+| maxtemp_c/f | float | NN.N | 2 | 2 | Maximum temperature in celsius/farhenheit for the day | 24.3 / 75.8 | Valid float | 
+| mintemp_c/f | float | NN.N | 2 | 2 | Minimum temperature in celsius/farhenheit for the day | 18.2 / 64.7 | Valid float | 
+| avgtemp_c/f | float | NN.N | 2 | 2 | Average temperature in celsius/farhenheit for the day | 21.5 / 70.8 | Valid float | 
+| maxwind_kph/mph | float | NN.N | 2 | 2 | Maximum wind speed in kilometres/miles per hour | 31.7 / 19.7 | Valid float greater than 0 |
+| totalprecip_mm/in | float | NN.N | 2 | 2 | Total precipitation in milimetres/inches | 0.04 / 0.0 | Valid float equal to or above 0 | 
+| totalsnow_cm* | float | NN.N | 2 | 2 | Total snowfall in centimetres | 0.0 | Valid float equal to or above 0 |
+| avgvis_km/miles | float | NN.N | 2 | 2 | Average visibility in kilometres/miles | 10.0 / 6.0 | Valid float above 0 | 
+| avghumidity | int | NN | 1 | 1 | Average humidity as percentage | 71 | Valid int from 0 to 100 |
+| daily_chance_of_rain | int | NN | 1 | 1 | Chance of rain as a percentage | 0 | Valid int from 0 to 100 |
+| daily_chance_of_snow | int | NN | 1 | 1 | Chance of snow as a percentage | 0 | Valid int from 0 to 100 |
+| sunrise | string | XX:XX XX | 4 | 4 | Sunrise time | 06:57 AM | First two characters an int from 01-12, second two characters must be an int from 00-60, last two characters must be either 'AM' or 'PM' |
+| sunset | string | XX:XX XX | 4 | 4 | Sunset time | 07:08 PM | First two characters an int from 01-12, second two characters must be an int from 00-60, last two characters must be either 'AM' or 'PM' |
+| moonrise | string | XX:XX XX | 4 | 4 | Moonrise time | 09:26 PM | First two characters an int from 01-12, second two characters must be an int from 00-60, last two characters must be either 'AM' or 'PM' |
+| moonset | string | XX:XX XX | 4 | 4 | Moonset time | 11:15 AM | First two characters an int from 01-12, second two characters must be an int from 00-60, last two characters must be either 'AM' or 'PM' |
 
-
+**Yes average snowfall is only in metric, as opposed to all other ones which are in both metric and imperial*
 
 ## __Development__
 
