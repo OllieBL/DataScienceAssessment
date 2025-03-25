@@ -89,7 +89,7 @@ class Weather_App:
     def displayCurrent(self):
         
         # This line makes locationData into a list to use it later in the table
-        locationData = makeDataReadable(self.locationData_var)
+        locationData = listifyCurrent(self.locationData_var)
 
         # This for loop deletes the previous page for the new page to go on top of
         for i in self.master.winfo_children():
