@@ -1,5 +1,4 @@
 import requests
-import matplotlib.pyplot as plt
 
 def CurrentAPISearch(APIKey, location):
     response = requests.get(f'http://api.weatherapi.com/v1/current.json?key=b2b6f09cd9d943fdab584210251803&q={location}')
@@ -46,11 +45,3 @@ def listifyForecast(locationData):
                 out[1][numberLoops].append(j[x])
 
     return out
-
-
-chartable = []
-for x in listifyForecast(ForecastAPISearch('', 'Terrigal'))[1]:
-    chartable.append(x[2])
-fig, ax = plt.subplots()
-ax.plot(range(len(chartable)), chartable)
-plt.show()

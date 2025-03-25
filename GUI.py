@@ -1,5 +1,8 @@
 from tkinter import *
 from functions import *
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
 
 
 class Weather_App:
@@ -81,7 +84,7 @@ class Weather_App:
         self.APIKeyEntry.pack()
 
         # This line creates the submit button for the code 
-        self.submitButton = Button(self.frame3, text='Submit', command=lambda: [self.functionsRunner('forecast'), self.displayCurrent()])
+        self.submitButton = Button(self.frame3, text='Submit', command=lambda: [self.functionsRunner('forecast'), self.displayForecast()])
         self.submitButton.pack()
 
 
@@ -108,10 +111,43 @@ class Weather_App:
                 self.currentTable.insert(END, locationData[i][j])
 
     # This is the function that has the page that displays the return from the forecast weather api
-    # def displayForecast(self):
+    def displayForecast(self):
 
-        # This line makes location Data ino a list to use it later in the table
+        # This line makes location Data into a list to use it later in the table
+        locationData = listifyForecast(self.locationData_var)
 
+        # This for loop deletes the previous page for the new page to go on top of
+        for i in self.master.winfo_children():
+            i.destroy()
+
+        
+        # This section creates the page and all the components on it
+        # This line creates and packs the frame
+        self.frame6 = Frame(self.master, width=1000, height=500)
+        self.frame6.pack()
+        
+        # This section creates the table and fills it with the locationData list
+        for i in range(len(locationData[0][0])):
+            self.forecastTable = Text(self.frame6, height=1, width=50)
+            self.forecastTable.grid(row=i, column=0)
+            self.forecastTable.insert(END, locationData[0][0][i])
+        for i in range(3):
+            for j in range(len(locationData[0][1][i])):
+                self.forecastTable = Text(self.frame6, height=1, width=50)
+                self.forecastTable.grid(row=j, column=i+1)
+                self.forecastTable.insert(END, locationData[0][1][i][j])
+        
+        # This section makes and plots the graph for the other data
+        chartData = []
+        for i in locationData[1]:
+            chartData.append(i[2])
+        fig = Figure(figsize=(4,4))
+        ax = fig.add_subplot(111)
+        ax.plot(chartData)
+        self.canvas = FigureCanvasTkAgg(fig, self.frame6)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().grid()
+        
         
 
 
