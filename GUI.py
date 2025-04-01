@@ -155,10 +155,15 @@ class Weather_App:
         # This section makes and plots the graph for the other data
         self.graphGenerator(locationData, self.frame6, [2, 7, 12])
         
+        loopChecker = 0
         # All the checkboxes for the graph
-        for i in range(len(self.assessedVariables())):
-            self.forecastCheckbox = Checkbutton(self.frame6, text=self.assessedVariables[i], variable=self.graphVariables[i], onvalue=1, offvalue=0)
-            self.forecastCheckbox.grid()
+        for i in self.assessedVariables.keys():
+            self.graphVariables[loopChecker] = Variable()
+            self.forecastCheckbox = f'forecastCheckbox{loopChecker}'
+            self.forecastCheckbox = Checkbutton(self.frame6, text=i, variable=self.graphVariables[loopChecker], onvalue=1, offvalue=0)
+            self.forecastCheckbox.grid(column=1, row= 20+loopChecker)
+            loopChecker += 1
+        self.newCheckButton = Button(command=lambda : [self.graph.destroy(), self.graphGenerator(locationData, self.frame6, lambda : [test = [] for y in range(len(self.graphVariables)) for x in self.assessedVariables test.append() ])])
         
 
 
@@ -177,9 +182,9 @@ class Weather_App:
         ax = fig.add_subplot(111)
         for i in chartData:
             ax.plot(i)
-        self.canvas = FigureCanvasTkAgg(fig, frame)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().grid()
+        self.graph = FigureCanvasTkAgg(fig, frame)
+        self.graph.draw()
+        self.graph.get_tk_widget().grid(rowspan=12)
 
     # This function is a collection of the various functions that the code will run from the functions.py file
     def functionsRunner(self, choice):
