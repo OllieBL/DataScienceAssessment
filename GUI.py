@@ -15,6 +15,21 @@ class Weather_App:
         self.location_var = StringVar()
         self.apiKey_var = StringVar()
         self.locationData_var = ''
+        self.assessedVariables = {
+            'Temp' : 2,
+            'Wind Speed' : 7,
+            'Pressure' : 10,
+            'Precipitation' : 12,
+            'Humidity' : 15,
+            'Feels Like' : 17,
+            'Wind Chill' : 19,
+            'Heat Index' : 21,
+            'Dewpoint' : 23,
+            'Chance of Rain' : 26,
+            'Gust Speed' : 34,
+            'UV' : 35
+        }
+        self.graphVariables = [0,0,0,0,0,0,0,0,0,0,0,0]
 
 
     # This function is the first selection page for the user, it allows the user to pick what API they want to search; current, history, or forecast
@@ -138,20 +153,33 @@ class Weather_App:
                 self.forecastTable.insert(END, locationData[0][1][i][j])
         
         # This section makes and plots the graph for the other data
+        self.graphGenerator(locationData, self.frame6, [2, 7, 12])
+        
+        # All the checkboxes for the graph
+        for i in range(len(self.assessedVariables())):
+            self.forecastCheckbox = Checkbutton(self.frame6, text=self.assessedVariables[i], variable=self.graphVariables[i], onvalue=1, offvalue=0)
+            self.forecastCheckbox.grid()
+        
+
+
+        
+        
+
+
+    def graphGenerator(self, locationData, frame, wantedDisplays):
         chartData = []
-        for i in locationData[1]:
-            chartData.append(i[2])
+        for i in wantedDisplays:
+            chartData.append([])
+        for i in range(len(wantedDisplays)):
+            for j in locationData[1]:
+                chartData[i].append(j[wantedDisplays[i]])
         fig = Figure(figsize=(4,4))
         ax = fig.add_subplot(111)
-        ax.plot(chartData)
-        self.canvas = FigureCanvasTkAgg(fig, self.frame6)
+        for i in chartData:
+            ax.plot(i)
+        self.canvas = FigureCanvasTkAgg(fig, frame)
         self.canvas.draw()
         self.canvas.get_tk_widget().grid()
-        
-        
-
-
-        
 
     # This function is a collection of the various functions that the code will run from the functions.py file
     def functionsRunner(self, choice):

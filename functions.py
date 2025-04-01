@@ -47,7 +47,7 @@ def listifyForecast(locationData):
 
     return out
 
-chartData = []
+'''chartData = []
 for i in range(3):
     chartData.append([])
 locationData = listifyForecast(ForecastAPISearch('', 'Terrigal'))
@@ -60,4 +60,4 @@ fig, ax = plt.subplots()
 for i in chartData:
     ax.plot(range(len(i)), i)
 
-plt.show()
+plt.show()'''
