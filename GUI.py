@@ -163,7 +163,13 @@ class Weather_App:
             self.forecastCheckbox = Checkbutton(self.frame6, text=i, variable=self.graphVariables[loopChecker], onvalue=1, offvalue=0)
             self.forecastCheckbox.grid(column=1, row= 20+loopChecker)
             loopChecker += 1
-        self.newCheckButton = Button(command=lambda : [self.graph.destroy(), self.graphGenerator(locationData, self.frame6, lambda : [test = [] for y in range(len(self.graphVariables)) for x in self.assessedVariables test.append() ])])
+        temporaryChecker = []
+        loopList = list(self.assessedVariables.values())
+        for i in range(len(self.graphVariables)):
+            if self.graphVariables[i] == 1:
+                temporaryChecker.append(loopList[i])
+        self.newCheckButton = Button(text='Refresh Graph?',command=lambda : [self.graph.clear(), self.graphGenerator(locationData, self.frame6, temporaryChecker)])
+        self.newCheckButton.pack()
         
 
 
