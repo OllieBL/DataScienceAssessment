@@ -31,7 +31,6 @@ class Weather_App:
         }
         self.graphVariables = [0,0,0,0,0,0,0,0,0,0,0,0]
 
-
     # This function is the first selection page for the user, it allows the user to pick what API they want to search; current, history, or forecast
     def APISelection(self):
 
@@ -153,31 +152,22 @@ class Weather_App:
                 self.forecastTable.insert(END, locationData[0][1][i][j])
         
         # This section makes and plots the graph for the other data
-        self.graphGenerator(locationData, self.frame6, [2, 7, 12])
+        self.grapher(locationData, self.frame6, [2], True)
         
         loopChecker = 0
         # All the checkboxes for the graph
         for i in self.assessedVariables.keys():
-            self.graphVariables[loopChecker] = Variable()
+            self.graphVariables[loopChecker] = BooleanVar()
+            self.graphVariables[loopChecker].set(False)
             self.forecastCheckbox = f'forecastCheckbox{loopChecker}'
-            self.forecastCheckbox = Checkbutton(self.frame6, text=i, variable=self.graphVariables[loopChecker], onvalue=1, offvalue=0)
+            self.forecastCheckbox = Checkbutton(self.frame6, text=i, variable=self.graphVariables[loopChecker], onvalue=True, offvalue=False)
             self.forecastCheckbox.grid(column=1, row= 20+loopChecker)
             loopChecker += 1
-        temporaryChecker = []
-        loopList = list(self.assessedVariables.values())
-        for i in range(len(self.graphVariables)):
-            if self.graphVariables[i] == 1:
-                temporaryChecker.append(loopList[i])
-        self.newCheckButton = Button(text='Refresh Graph?',command=lambda : [self.graph.clear(), self.graphGenerator(locationData, self.frame6, temporaryChecker)])
-        self.newCheckButton.pack()
-        
+        self.refreshGraphButton = Button(self.frame6, text='Refresh Graph', command=lambda : [self.grapher(locationData, self.frame6, self.functionsRunner('graph checker'), False)])
+        self.refreshGraphButton.grid()
 
-
-        
-        
-
-
-    def graphGenerator(self, locationData, frame, wantedDisplays):
+    
+    def grapher(self, locationData, frame, wantedDisplays, createGraph):
         chartData = []
         for i in wantedDisplays:
             chartData.append([])
@@ -188,9 +178,17 @@ class Weather_App:
         ax = fig.add_subplot(111)
         for i in chartData:
             ax.plot(i)
-        self.graph = FigureCanvasTkAgg(fig, frame)
-        self.graph.draw()
-        self.graph.get_tk_widget().grid(rowspan=12)
+        if createGraph == True:
+            self.graph = FigureCanvasTkAgg(fig, frame)
+            self.graph.draw()
+            self.graph.get_tk_widget().grid(rowspan=12)
+        if createGraph == False:
+            old_graph = self.graph.figure
+            old_graph.canvas = None
+            self.graph.figure = fig
+            fig.canvas = self.graph
+            self.graph.draw()
+        
 
     # This function is a collection of the various functions that the code will run from the functions.py file
     def functionsRunner(self, choice):
@@ -200,6 +198,14 @@ class Weather_App:
             self.locationData_var = CurrentAPISearch(apiKey, location)
         elif choice == 'forecast':
             self.locationData_var = ForecastAPISearch(apiKey, location)
+        elif choice == 'graph checker':
+            temporaryChecker = []
+            loopList = list(self.assessedVariables.values())
+            for i in range(len(self.graphVariables)):
+                test = self.graphVariables[i].get()
+                if test == True:
+                    temporaryChecker.append(loopList[i])
+            return temporaryChecker
 
 def runGUI():
     root = Tk()
@@ -208,3 +214,23 @@ def runGUI():
 
 
 runGUI()
+
+'''chartData = []
+        for i in wantedDisplays:
+            chartData.append([])
+        for i in range(len(wantedDisplays)):
+            for j in locationData[1]:
+                chartData[i].append(j[wantedDisplays[i]])
+        fig = Figure(figsize=(4,4))
+        ax = fig.add_subplot(111)
+        for i in chartData:
+            ax.plot(i)
+        if createGraph == True:
+            self.graph = FigureCanvasTkAgg(fig, frame)
+            self.graph.draw()
+            self.graph.get_tk_widget().grid(rowspan=12)
+        if createGraph == False:
+            old_graph = self.graph.figure
+            old_graph.canvas = None
+            self.graph.figure = fig
+            fig.canvas = self.graph'''
