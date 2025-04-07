@@ -31,6 +31,7 @@ class Weather_App:
             'UV' : 33
         }
         self.graphVariables = [0,0,0,0,0,0,0,0,0,0,0,0]
+        self.pastSearches = []
 
     # This function is the first selection page for the user, it allows the user to pick what API they want to search; current, history, or forecast
     def APISelection(self):
@@ -56,6 +57,9 @@ class Weather_App:
         self.historyButton = Button(self.frame1, text='History API', command=self.history)
         self.historyButton.pack()
 
+        # This line creates and packs the button to access past searches
+        self.pastSearchesButton = Button(self.frame1, text='Past Searches', command=self.pastSearchesPage)
+
 
     # This function is the page that allows the user to select the location that they wnat to search for when they choose the 'current' API
     def current(self):
@@ -79,8 +83,12 @@ class Weather_App:
         self.APIKeyEntry.pack()
 
         # This line is the button that the user clicks on to confirm their location choice and API key
-        self.submitButton = Button(self.frame2, text='Submit', command=lambda: [self.functionsRunner('current'), self.displayCurrent()])
+        self.submitButton = Button(self.frame2, text='Submit', command=lambda: [self.functionsRunner('current'), self.pastSearches.append(['current', self.location_var.get(), self.apiKey_var.get(), self.displayCurrent]), self.displayCurrent()])
         self.submitButton.pack()
+
+        # Back button if you want to return to the homescreen
+        self.backButtonSearch = Button(self.frame2, text='Back', command=self.APISelection)
+        self.backButtonSearch.pack()
 
 
     def forecast(self):
@@ -103,8 +111,12 @@ class Weather_App:
         self.APIKeyEntry.pack()
 
         # This line creates the submit button for the code 
-        self.submitButton = Button(self.frame3, text='Submit', command=lambda: [self.functionsRunner('forecast'), self.displayForecast()])
+        self.submitButton = Button(self.frame3, text='Submit', command=lambda: [self.functionsRunner('forecast'), self.pastSearches.append(['forecast', self.location_var.get(), self.apiKey_var.get(), self.displayForecast]), self.displayForecast()])
         self.submitButton.pack()
+                
+        # Back button if you want to return to the homescreen
+        self.backButtonSearch = Button(self.frame3, text='Back', command=self.APISelection)
+        self.backButtonSearch.pack()
 
     
     def history(self):
@@ -127,8 +139,12 @@ class Weather_App:
         self.APIKeyEntry.pack()
 
         # This line creates the submit button for the code 
-        self.submitButton = Button(self.frame4, text='Submit', command=lambda: [self.functionsRunner('history'), self.displayHistory()])
+        self.submitButton = Button(self.frame4, text='Submit', command=lambda: [self.functionsRunner('history'), self.pastSearches.append(['history', self.location_var.get(), self.apiKey_var.get(), self.displayHistory]), self.displayHistory()])
         self.submitButton.pack()
+
+        # Back button if you want to return to the homescreen
+        self.backButtonSearch = Button(self.frame4, text='Back', command=self.APISelection)
+        self.backButtonSearch.pack()
 
 
     # This is the function that has the page that displays the return from the current weather api
@@ -146,11 +162,15 @@ class Weather_App:
         self.frame5 = Frame(self.master, width=1000, height=500)
         self.frame5.pack()
 
+        # Back button if you want to return to the homescreen
+        self.backButtonSearch = Button(self.frame5, text='Back', command=self.APISelection)
+        self.backButtonSearch.grid()
+
         # This section creates the table and fills it with the locationData list
         for i in range(len(locationData)):
             for j in range(len(locationData[i])):
                 self.currentTable = Text(self.frame5, height=1, width=50)
-                self.currentTable.grid(row=j, column=i)
+                self.currentTable.grid(row=j, column=i+1)
                 self.currentTable.insert(END, locationData[i][j])
 
     # This is the function that has the page that displays the return from the forecast weather api
@@ -168,16 +188,20 @@ class Weather_App:
         # This line creates and packs the frame
         self.frame6 = Frame(self.master, width=1000, height=500)
         self.frame6.pack()
+
+        # Back button if you want to return to the homescreen
+        self.backButtonSearch = Button(self.frame6, text='Back', command=self.APISelection)
+        self.backButtonSearch.grid()
         
         # This section creates the table and fills it with the locationData list
         for i in range(len(locationData[0][0])):
             self.forecastTable = Text(self.frame6, height=1, width=50)
-            self.forecastTable.grid(row=i, column=0)
+            self.forecastTable.grid(row=i, column=1)
             self.forecastTable.insert(END, locationData[0][0][i])
         for i in range(3):
             for j in range(len(locationData[0][1][i])):
                 self.forecastTable = Text(self.frame6, height=1, width=50)
-                self.forecastTable.grid(row=j, column=i+1)
+                self.forecastTable.grid(row=j, column=i+2)
                 self.forecastTable.insert(END, locationData[0][1][i][j])
         
         # This section makes and plots the graph for the other data
@@ -194,7 +218,7 @@ class Weather_App:
             # Generates the content of each checkbox and places it
             self.forecastCheckbox = f'forecastCheckbox{loopChecker}'
             self.forecastCheckbox = Checkbutton(self.frame6, text=i, variable=self.graphVariables[loopChecker], onvalue=True, offvalue=False)
-            self.forecastCheckbox.grid(column=1, row= 20+loopChecker)
+            self.forecastCheckbox.grid(column=2, row= 20+loopChecker)
 
             # Uses loopchecker to make it easier to use the graphvariables and the assessed variables in the same loop
             loopChecker += 1
@@ -217,11 +241,15 @@ class Weather_App:
         self.frame7 = Frame(self.master, width=1000, height=500)
         self.frame7.pack()
 
+        # Back button if you want to return to the homescreen
+        self.backButtonSearch = Button(self.frame7, text='Back', command=self.APISelection)
+        self.backButtonSearch.pack()
+
         # This section creates the table and fills it with the data
         for i in range(len(locationData[0])):
             for j in range(len(locationData[0][i])):
                 self.currentTable = Text(self.frame7, height=1, width=50)
-                self.currentTable.grid(row=j, column=i)
+                self.currentTable.grid(row=j, column=i+1)
                 self.currentTable.insert(END, locationData[0][i][j])
 
         self.grapher(locationData, self.frame7, [2], True)
@@ -236,7 +264,7 @@ class Weather_App:
 
             self.historyCheckbox = f'historyCheckbox{loopChecker}'
             self.historyCheckbox = Checkbutton(self.frame7, text=i, variable=self.graphVariables[loopChecker], onvalue=True, offvalue=False)
-            self.historyCheckbox.grid(column=1, row= 20+loopChecker)
+            self.historyCheckbox.grid(column=2, row= 20+loopChecker)
 
             loopChecker += 1
 
@@ -244,13 +272,35 @@ class Weather_App:
         self.refreshGraphButton = Button(self.frame7, text='Refresh Graph', command=lambda : [self.grapher(locationData, self.frame7, self.functionsRunner('graph checker'), False)])
         self.refreshGraphButton.grid()
 
+
+
+    def pastSearchesPage(self):
+
+        # This for loop deletes the previous page for the new page to go on top of
+        for i in self.master.winfo_children():
+            i.destroy()
+
+
+        # This section creates and packs the frame
+        self.frame8 = Frame(self.master, width=1000, height=500)
+        self.frame8.pack()
+
+        # This loop creates the table for past searches and their buttons
+        for i in range(len(self.pastSearches)):
+            for j in range(len(self.pastSearches[i])):
+                self.pastSearchesTable = Text(self.frame8, height=1, width=50)
+                self.pastSearchesTable.grid(column=j+1, row=i)
+                self.pastSearchesTable.insert(END, self.pastSearches[i][j])
+                self.pastSearchesTableButton = Button(self.frame8, text='Continue Search?', command=lambda : [])
+        
+
         
 
 
 
         
 
-    
+    # A function to generate the graph in relevent frames
     def grapher(self, locationData, frame, wantedDisplays, createGraph):
         chartData = []
         for i in wantedDisplays:
@@ -265,7 +315,7 @@ class Weather_App:
         if createGraph == True:
             self.graph = FigureCanvasTkAgg(fig, frame)
             self.graph.draw()
-            self.graph.get_tk_widget().grid(rowspan=12)
+            self.graph.get_tk_widget().grid(column=1,rowspan=12)
         if createGraph == False:
             old_graph = self.graph.figure
             old_graph.canvas = None
@@ -278,7 +328,7 @@ class Weather_App:
     def functionsRunner(self, choice):
         apiKey = self.apiKey_var.get()
         location = self.location_var.get()
-        currentDate = datetime.now() - timedelta(6)
+        currentDate = datetime.now() - timedelta(1)
         currentDate.strftime('%Y-%m-%d')
         if choice == 'current':
             self.locationData_var = CurrentAPISearch(apiKey, location)
