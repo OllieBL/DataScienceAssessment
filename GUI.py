@@ -3,6 +3,7 @@ from functions import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+from datetime import *
 
 
 class Weather_App:
@@ -26,8 +27,8 @@ class Weather_App:
             'Heat Index' : 21,
             'Dewpoint' : 23,
             'Chance of Rain' : 26,
-            'Gust Speed' : 34,
-            'UV' : 35
+            'Gust Speed' : 32,
+            'UV' : 33
         }
         self.graphVariables = [0,0,0,0,0,0,0,0,0,0,0,0]
 
@@ -50,6 +51,10 @@ class Weather_App:
         # This line creates and packs the button to select the forecast API
         self.forecastButton = Button(self.frame1, text='Forecast API', command=self.forecast)
         self.forecastButton.pack()
+
+        # This line creates and packs the button to select the history API
+        self.historyButton = Button(self.frame1, text='History API', command=self.history)
+        self.historyButton.pack()
 
 
     # This function is the page that allows the user to select the location that they wnat to search for when they choose the 'current' API
@@ -99,6 +104,30 @@ class Weather_App:
 
         # This line creates the submit button for the code 
         self.submitButton = Button(self.frame3, text='Submit', command=lambda: [self.functionsRunner('forecast'), self.displayForecast()])
+        self.submitButton.pack()
+
+    
+    def history(self):
+
+        # This for loop deletes the  previous page for the new page to go on top of
+        for i in self.master.winfo_children():
+            i.destroy()
+
+        # This section creates the page and all the components on it
+        # This line creates and packs the frame
+        self.frame4 = Frame(self.master, width=1000, height=500)
+        self.frame4.pack()
+
+         # This line creates and packs the text box for the user to enter the location
+        self.locationEntry = Entry(self.frame4, textvariable=self.location_var)
+        self.locationEntry.pack()
+
+        # This line creates and packs the text box for the user to enter their API key
+        self.APIKeyEntry = Entry(self.frame4, textvariable=self.apiKey_var)
+        self.APIKeyEntry.pack()
+
+        # This line creates the submit button for the code 
+        self.submitButton = Button(self.frame4, text='Submit', command=lambda: [self.functionsRunner('history'), self.displayHistory()])
         self.submitButton.pack()
 
 
@@ -157,14 +186,69 @@ class Weather_App:
         loopChecker = 0
         # All the checkboxes for the graph
         for i in self.assessedVariables.keys():
+
+            # Sets each entry in graphVariables to a tkinter boolean and False
             self.graphVariables[loopChecker] = BooleanVar()
             self.graphVariables[loopChecker].set(False)
+
+            # Generates the content of each checkbox and places it
             self.forecastCheckbox = f'forecastCheckbox{loopChecker}'
             self.forecastCheckbox = Checkbutton(self.frame6, text=i, variable=self.graphVariables[loopChecker], onvalue=True, offvalue=False)
             self.forecastCheckbox.grid(column=1, row= 20+loopChecker)
+
+            # Uses loopchecker to make it easier to use the graphvariables and the assessed variables in the same loop
             loopChecker += 1
+        
+        # creates the button to refresh the graph
         self.refreshGraphButton = Button(self.frame6, text='Refresh Graph', command=lambda : [self.grapher(locationData, self.frame6, self.functionsRunner('graph checker'), False)])
         self.refreshGraphButton.grid()
+
+
+    def displayHistory(self):
+        
+        
+        locationData = listifyHistory(self.locationData_var)
+
+        # This for loop deletes the previous page for the new page to go on top of
+        for i in self.master.winfo_children():
+            i.destroy()
+
+        # This section creates and packs the frame
+        self.frame7 = Frame(self.master, width=1000, height=500)
+        self.frame7.pack()
+
+        # This section creates the table and fills it with the data
+        for i in range(len(locationData[0])):
+            for j in range(len(locationData[0][i])):
+                self.currentTable = Text(self.frame7, height=1, width=50)
+                self.currentTable.grid(row=j, column=i)
+                self.currentTable.insert(END, locationData[0][i][j])
+
+        self.grapher(locationData, self.frame7, [2], True)
+
+        loopChecker = 0
+        # This section makes the table and checkboxes
+        for i in self.assessedVariables.keys():
+
+            self.graphVariables[loopChecker] = BooleanVar()
+            self.graphVariables[loopChecker].set(False)
+
+
+            self.historyCheckbox = f'historyCheckbox{loopChecker}'
+            self.historyCheckbox = Checkbutton(self.frame7, text=i, variable=self.graphVariables[loopChecker], onvalue=True, offvalue=False)
+            self.historyCheckbox.grid(column=1, row= 20+loopChecker)
+
+            loopChecker += 1
+
+        # creates the button to refresh the graph
+        self.refreshGraphButton = Button(self.frame7, text='Refresh Graph', command=lambda : [self.grapher(locationData, self.frame7, self.functionsRunner('graph checker'), False)])
+        self.refreshGraphButton.grid()
+
+        
+
+
+
+        
 
     
     def grapher(self, locationData, frame, wantedDisplays, createGraph):
@@ -194,10 +278,14 @@ class Weather_App:
     def functionsRunner(self, choice):
         apiKey = self.apiKey_var.get()
         location = self.location_var.get()
+        currentDate = datetime.now() - timedelta(6)
+        currentDate.strftime('%Y-%m-%d')
         if choice == 'current':
             self.locationData_var = CurrentAPISearch(apiKey, location)
         elif choice == 'forecast':
             self.locationData_var = ForecastAPISearch(apiKey, location)
+        elif choice == 'history':
+            self.locationData_var = HistoryAPISearch(apiKey, location, currentDate)
         elif choice == 'graph checker':
             temporaryChecker = []
             loopList = list(self.assessedVariables.values())
@@ -214,23 +302,3 @@ def runGUI():
 
 
 runGUI()
-
-'''chartData = []
-        for i in wantedDisplays:
-            chartData.append([])
-        for i in range(len(wantedDisplays)):
-            for j in locationData[1]:
-                chartData[i].append(j[wantedDisplays[i]])
-        fig = Figure(figsize=(4,4))
-        ax = fig.add_subplot(111)
-        for i in chartData:
-            ax.plot(i)
-        if createGraph == True:
-            self.graph = FigureCanvasTkAgg(fig, frame)
-            self.graph.draw()
-            self.graph.get_tk_widget().grid(rowspan=12)
-        if createGraph == False:
-            old_graph = self.graph.figure
-            old_graph.canvas = None
-            self.graph.figure = fig
-            fig.canvas = self.graph'''

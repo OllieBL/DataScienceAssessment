@@ -12,7 +12,7 @@ def ForecastAPISearch(APIKey, location):
     return locationData
 
 def HistoryAPISearch(APIKey, location, date):
-    response = requests.get(f'http://api.weatherapi.com/v1/history.json?key=b2b6f09cd9d943fdab584210251803&q={location}&date=2025-{date[0]}-{date[1]}')
+    response = requests.get(f'http://api.weatherapi.com/v1/history.json?key=b2b6f09cd9d943fdab584210251803&q={location}&date={date}')
     locationData = response.json()
     return locationData
 
@@ -47,17 +47,17 @@ def listifyForecast(locationData):
 
     return out
 
-'''chartData = []
-for i in range(3):
-    chartData.append([])
-locationData = listifyForecast(ForecastAPISearch('', 'Terrigal'))
-for i in locationData[1]:
-    chartData[0].append(i[2])
-    chartData[1].append(i[7])
-    chartData[2].append(i[12])
-
-fig, ax = plt.subplots()
-for i in chartData:
-    ax.plot(range(len(i)), i)
-
-plt.show()'''
+def listifyHistory(locationData):
+    out = [[[],[]],[]]
+    locationDataDay = locationData['forecast']['forecastday']
+    numberLoops = -1
+    for i in locationDataDay[0]['day']:
+        out[0][0].append(i)
+        out[0][1].append(locationDataDay[0]['day'][i])
+    for i in locationDataDay[0]['hour']:
+        out[1].append([])
+        numberLoops += 1
+        for j in i:
+            out[1][numberLoops].append(i[j])
+    
+    return out
