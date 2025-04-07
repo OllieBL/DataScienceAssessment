@@ -59,6 +59,7 @@ class Weather_App:
 
         # This line creates and packs the button to access past searches
         self.pastSearchesButton = Button(self.frame1, text='Past Searches', command=self.pastSearchesPage)
+        self.pastSearchesButton.pack()
 
 
     # This function is the page that allows the user to select the location that they wnat to search for when they choose the 'current' API
@@ -83,7 +84,7 @@ class Weather_App:
         self.APIKeyEntry.pack()
 
         # This line is the button that the user clicks on to confirm their location choice and API key
-        self.submitButton = Button(self.frame2, text='Submit', command=lambda: [self.functionsRunner('current'), self.pastSearches.append(['current', self.location_var.get(), self.apiKey_var.get(), self.displayCurrent]), self.displayCurrent()])
+        self.submitButton = Button(self.frame2, text='Submit', command=lambda: [self.errorHandler(self.frame2, self.functionsRunner('current')), self.errorHandler(self.frame2, self.pastSearches.append(['current', self.location_var.get(), self.apiKey_var.get(), self.displayCurrent])), self.errorHandler(self.frame2, self.displayCurrent())])
         self.submitButton.pack()
 
         # Back button if you want to return to the homescreen
@@ -243,7 +244,7 @@ class Weather_App:
 
         # Back button if you want to return to the homescreen
         self.backButtonSearch = Button(self.frame7, text='Back', command=self.APISelection)
-        self.backButtonSearch.pack()
+        self.backButtonSearch.grid()
 
         # This section creates the table and fills it with the data
         for i in range(len(locationData[0])):
@@ -285,15 +286,18 @@ class Weather_App:
         self.frame8 = Frame(self.master, width=1000, height=500)
         self.frame8.pack()
 
+        # Back button if you want to return to the homescreen
+        self.backButtonSearch = Button(self.frame8, text='Back', command=self.APISelection)
+        self.backButtonSearch.grid()
+
         # This loop creates the table for past searches and their buttons
         for i in range(len(self.pastSearches)):
-            for j in range(len(self.pastSearches[i])):
-                self.pastSearchesTable = Text(self.frame8, height=1, width=50)
-                self.pastSearchesTable.grid(column=j+1, row=i)
+            for j in range(len(self.pastSearches[i])-1):
+                self.pastSearchesTable = Text(self.frame8, height=1, width=30)
+                self.pastSearchesTable.grid(column=j+1, row=i+1)
                 self.pastSearchesTable.insert(END, self.pastSearches[i][j])
-                self.pastSearchesTableButton = Button(self.frame8, text='Continue Search?', command=lambda : [])
-        
-
+            self.pastSearchesTableButton = Button(self.frame8, text='Continue Search?', command=lambda i=i: [self.functionsRunner('assign inputs', [self.pastSearches[i][1], self.pastSearches[i][2]]), self.functionsRunner(self.pastSearches[i][0]), self.pastSearches[i][3]()])
+            self.pastSearchesTableButton.grid(column=4, row=i+1) 
         
 
 
@@ -325,7 +329,7 @@ class Weather_App:
         
 
     # This function is a collection of the various functions that the code will run from the functions.py file
-    def functionsRunner(self, choice):
+    def functionsRunner(self, choice, vars = []):
         apiKey = self.apiKey_var.get()
         location = self.location_var.get()
         currentDate = datetime.now() - timedelta(1)
@@ -344,6 +348,18 @@ class Weather_App:
                 if test == True:
                     temporaryChecker.append(loopList[i])
             return temporaryChecker
+        elif choice == 'assign inputs':
+            self.location_var = StringVar(value=vars[0])
+            self.apiKey_var = StringVar(value=vars[1])
+    
+    def errorHandler(self, func, frame):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except:
+                self.errorMessage = Label(frame, text='location or api key not valid, please try again')
+                return None
+        return wrapper
 
 def runGUI():
     root = Tk()

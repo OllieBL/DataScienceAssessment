@@ -19,6 +19,7 @@ def HistoryAPISearch(APIKey, location, date):
 
 def listifyCurrent(locationData):
     out = [[],[]]
+    assert 'location' in locationData
     for i in locationData.values():
         for j in i:
             out[0].append(j)
