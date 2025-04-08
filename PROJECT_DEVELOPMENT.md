@@ -167,16 +167,12 @@ END FindLocationDetails
 
 **Yes average snowfall is only in metric, as opposed to all other ones which are in both metric and imperial*
 
-## __Development__
-
-### __UI Design__
-
-### __Progress Report__
-
-## __Integration__
-
-## __Testing and Debugging__
-
 ## __Installation__
 
+The information for this section is in [requirements](requirements.txt) and [README](README.md)
+
 ## __Maintenance__
+
+1. The Weather API is likely to remain consistent in its functionality over time, but if it does change I can adjust the code to change with the API by altering the formatting of a few functions. The main functions in need of altering the in the outcome of a changed API output would be the listify functions which convert the json output of the 
+
+## __Peer Evaluation__

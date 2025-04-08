@@ -84,7 +84,7 @@ class Weather_App:
         self.APIKeyEntry.pack()
 
         # This line is the button that the user clicks on to confirm their location choice and API key
-        self.submitButton = Button(self.frame2, text='Submit', command=lambda: [self.errorHandler(self.frame2, self.functionsRunner('current')), self.errorHandler(self.frame2, self.pastSearches.append(['current', self.location_var.get(), self.apiKey_var.get(), self.displayCurrent])), self.errorHandler(self.frame2, self.displayCurrent())])
+        self.submitButton = Button(self.frame2, text='Submit', command=lambda: [self.functionsRunner('current'), self.pastSearches.append(['current', self.location_var.get(), self.apiKey_var.get(), self.displayCurrent]), self.displayCurrent()])
         self.submitButton.pack()
 
         # Back button if you want to return to the homescreen
@@ -351,15 +351,6 @@ class Weather_App:
         elif choice == 'assign inputs':
             self.location_var = StringVar(value=vars[0])
             self.apiKey_var = StringVar(value=vars[1])
-    
-    def errorHandler(self, func, frame):
-        def wrapper(*args, **kwargs):
-            try:
-                return func(*args, **kwargs)
-            except:
-                self.errorMessage = Label(frame, text='location or api key not valid, please try again')
-                return None
-        return wrapper
 
 def runGUI():
     root = Tk()
