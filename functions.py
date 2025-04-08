@@ -2,7 +2,7 @@ import requests
 
 def CurrentAPISearch(APIKey, location):
     try:
-        response = requests.get(f'http://api.weatherapi.com/v1/current.json?key=b2b6f09cd9d943fdab584210251803&q={location}')
+        response = requests.get(f'http://api.weatherapi.com/v1/current.json?key={APIKey}&q={location}')
         locationData = response.json()
         assert 'location' in locationData
         return locationData
@@ -11,7 +11,7 @@ def CurrentAPISearch(APIKey, location):
 
 def ForecastAPISearch(APIKey, location):
     try:
-        response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=b2b6f09cd9d943fdab584210251803&q={location}&days=3')
+        response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={APIKey}&q={location}&days=3')
         locationData = response.json()
         return locationData
     except:
@@ -19,7 +19,7 @@ def ForecastAPISearch(APIKey, location):
 
 def HistoryAPISearch(APIKey, location, date):
     try:
-        response = requests.get(f'http://api.weatherapi.com/v1/history.json?key=b2b6f09cd9d943fdab584210251803&q={location}&date={date}')
+        response = requests.get(f'http://api.weatherapi.com/v1/history.json?key={APIKey}&q={location}&date={date}')
         locationData = response.json()
         return locationData
     except:

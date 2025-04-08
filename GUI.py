@@ -356,6 +356,3 @@ def runGUI():
     root = Tk()
     Weather_App(root)
     root.mainloop()
-
-
-runGUI()
