@@ -122,12 +122,19 @@ BEGIN FindLocationDetails()
         RETURN Not Valid
     ENDIF
 END FindLocationDetails
+
+BEGIN VisualiseInformation(Location_Details)
+    MakeGraph
+    FOR number = 0 TO amount in Location_Details STEP 1
+        Add Location_Details[1] to Graph
+    NEXT number
 ```
 
 #### __Flowcharts__
 
 ![alt text](<Flowchart main.png>)
-![alt text](<Flowchart Function.png>)
+![alt text](<Flowchart FindLocationDetails.png>)
+![alt text](<Flowchart VisualiseInformation.png>)
 
 ### __Data Dictionary__
 
@@ -173,6 +180,7 @@ The information for this section is in [requirements](requirements.txt) and [REA
 
 ## __Maintenance__
 
-1. The Weather API is likely to remain consistent in its functionality over time, but if it does change I can adjust the code to change with the API by altering the formatting of a few functions. The main functions in need of altering the in the outcome of a changed API output would be the listify functions which convert the json output of the 
+1. The Weather API is likely to remain consistent in its functionality over time, but if it does change I can adjust the code to change with the API by altering the formatting of a few functions. The main functions in need of altering the in the outcome of a changed API output would be the listify functions which convert the json output of the API request into a list, and if the API change their formatting at all the function may not work as intended, failing to group things properly and giving faulty data to the other functions, but it would be fairly easy to alter to work just by fixing the exact functionality of each of them. Another way they would change it is the order of the statisitics used, which affects how the application generates the graph, however it would be solved by altering the numbers used to map the statistics to their names.
+1. 
 
-## __Peer Evaluation__
+
